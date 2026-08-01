@@ -1,3 +1,4 @@
+HEAD
 # Wazuh SIEM Home Lab
 
 ## Overview
@@ -23,3 +24,6 @@ The objective of this project is to build practical experience in:
 ## Project Status
 
 Phase 1 - Environment Setup
+
+# wazuh-siem-home-lab
+Cybersecurity home lab using Wazuh SIEM for endpoint monitoring, log analysis and security alert investigation.
