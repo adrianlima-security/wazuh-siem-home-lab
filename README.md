@@ -49,7 +49,7 @@ README.md
 - ✅ Phase 1 - Environment Setup
 - ✅ Phase 2 - Ubuntu Server Installation
 - ✅ Phase 3 - Initial Server Configuration
-- ⏳ Phase 4 - Wazuh Installation
+- ✅ Phase 4 - Wazuh Installation
 - ⏳ Phase 5 - Endpoint Deployment
 - ⏳ Phase 6 - Security Monitoring
 - ⏳ Phase 7 - Threat Detection
@@ -66,6 +66,7 @@ Wazuh-SIEM-Home-Lab
 │   ├── phase-1-environment-setup.md
 │   ├── phase-2-ubuntu-server-installation.md
 │   ├── phase-3-initial-server-configuration.md
+│   ├── phase-4-wazuh-installation.md
 │   └── troubleshooting.md
 │
 ├── screenshots
