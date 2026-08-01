@@ -4,19 +4,7 @@
 
 The objective of this phase is to deploy the Wazuh SIEM/XDR platform on the Ubuntu Server environment.
 
-This phase includes downloading the Wazuh installation assistant, validating the installer, troubleshooting the initial download issue, deploying the Wazuh components and verifying the successful installation.
-
----
-
-## Wazuh Deployment Overview
-
-Wazuh is an open-source SIEM/XDR platform used for security monitoring, log analysis, threat detection and endpoint protection.
-
-The deployment includes the following components:
-
-- Wazuh Indexer
-- Wazuh Manager
-- Wazuh Dashboard
+This phase includes downloading the Wazuh installation assistant, validating the installer, troubleshooting installation issues, deploying Wazuh components, configuring remote administration through SSH and validating Wazuh Dashboard access.
 
 ---
 
@@ -28,83 +16,69 @@ The official Wazuh installation assistant was downloaded to automate the deploym
 
 Command executed:
 
-```bash
-curl -sO https://packages.wazuh.com/4.12/wazuh-install.sh
-```
-
-## Verification
+    curl -sO https://packages.wazuh.com/4.x/wazuh-install.sh
 
 The downloaded file was verified:
 
-```bash
-ls -l wazuh-install.sh
-```
-
-The installer file was successfully downloaded.
-
-## Evidence
-
-Screenshot:
-
-`phase4-01-wazuh-installer-download.png`
-
----
-
-# Step 2 - Installer Validation
-
-## Description
-
-Before executing the installation script, the file content was reviewed to verify that the downloaded file was a valid Bash script.
-
-Command executed:
-
-```bash
-head wazuh-install.sh
-```
+    ls -l wazuh-install.sh
 
 ## Result
 
-The file was confirmed to be a Wazuh installation script.
-
-The script header was verified:
-
-```bash
-#!/bin/bash
-```
+The Wazuh installation script was downloaded successfully.
 
 ## Evidence
 
 Screenshot:
 
-`phase4-02-wazuh-script-validation.png`
+phase4-01-wazuh-installer-download.png
 
 ---
 
-# Step 3 - Troubleshooting Initial Download Issue
+# Step 2 - Validate Installation Script
 
 ## Description
 
-During the initial download attempt, the downloaded file did not contain the expected installation script.
+Before executing the installer, the downloaded file was reviewed to verify that it contained the expected Bash script.
 
-The file content showed an XML error response:
+Command executed:
 
-```xml
-AccessDenied
-```
+    head wazuh-install.sh
 
-The issue was identified because the downloaded file was not a Bash script.
+## Result
 
-## Resolution
+The installation script was validated successfully.
 
-The incorrect file was removed and the installer was downloaded again using the correct Wazuh package source.
+## Evidence
 
-Commands executed:
+Screenshot:
 
-```bash
-rm wazuh-install.sh
-```
+phase4-02-wazuh-script-validation.png
 
-The installer was downloaded again and successfully validated before execution.
+---
+
+# Step 3 - Troubleshooting Download Issue
+
+## Problem
+
+During the first download attempt, the downloaded file did not contain the expected Wazuh installation script.
+
+The file contained an XML error response:
+
+    AccessDenied
+
+## Investigation
+
+The file content was reviewed using:
+
+    head wazuh-install.sh
+
+The issue was identified because the downloaded file was not the official Wazuh installation assistant.
+
+## Solution
+
+The incorrect file was removed and the installer was downloaded again.
+
+The new file was validated successfully.
 
 ## Result
 
@@ -116,15 +90,13 @@ The correct Wazuh installation assistant was obtained.
 
 ## Description
 
-The Wazuh installation assistant was executed to deploy the complete SIEM/XDR environment.
+The Wazuh installation assistant was executed to deploy the SIEM/XDR platform.
 
 Command executed:
 
-```bash
-sudo bash wazuh-install.sh -a
-```
+    sudo bash wazuh-install.sh -a
 
-The installation process deployed:
+The installation deployed:
 
 - Wazuh Indexer
 - Wazuh Manager
@@ -132,61 +104,210 @@ The installation process deployed:
 
 ## Result
 
-The installation completed successfully.
-
-The Wazuh platform was deployed on the Ubuntu Server environment.
+The Wazuh SIEM/XDR platform was installed successfully.
 
 ## Evidence
 
 Screenshot:
 
-`phase4-03-wazuh-installation-complete.png`
+phase4-03-wazuh-installation-complete.png
 
 ---
 
-# Step 5 - Installation Validation
+# Step 5 - Remote Administration Using SSH
 
 ## Description
 
-After the installation process, the Wazuh services were verified to confirm that all components were running correctly.
+After completing the Wazuh installation, remote administration was configured through SSH from the Windows host machine.
 
-Services validated:
+SSH was used to manage the Ubuntu Server remotely instead of using the VMware console.
 
-```bash
-systemctl status wazuh-manager
-```
+The server IP address was identified:
 
-```bash
-systemctl status wazuh-indexer
-```
+    ip a
 
-```bash
-systemctl status wazuh-dashboard
-```
+The SSH service was verified:
+
+    sudo systemctl status ssh
+
+The remote connection was established from Windows PowerShell:
+
+    ssh adrian@SERVER_IP
 
 ## Result
 
-The Wazuh services were successfully installed and running.
+A successful SSH connection was established between the Windows host and Ubuntu Server.
 
-The platform is ready for initial access and configuration.
+Remote administration was confirmed.
+
+## Evidence
+
+Screenshot:
+
+phase4-04-ssh-remote-connection.png
+
+---
+
+# Step 6 - Recover Wazuh Dashboard Credentials
+
+## Description
+
+After the installation, access to the Wazuh Dashboard required the administrator credentials generated by the installation assistant.
+
+The credentials file was not immediately available, so the installation archive was investigated.
+
+The available files were reviewed:
+
+    ls -la
+
+The installation archive was identified:
+
+    wazuh-install-files.tar
+
+The archive contents were checked:
+
+    sudo tar -tf wazuh-install-files.tar
+
+The credentials file was located:
+
+    wazuh-install-files/wazuh-passwords.txt
+
+The archive was extracted:
+
+    sudo tar -xf wazuh-install-files.tar
+
+The credentials file was reviewed:
+
+    sudo cat wazuh-install-files/wazuh-passwords.txt
+
+## Result
+
+The Wazuh administrator credentials were successfully recovered.
+
+Security Note:
+
+The credentials file was not uploaded to GitHub and no sensitive information was included in the repository.
+
+---
+
+# Step 7 - Access Wazuh Dashboard
+
+## Description
+
+The Wazuh Dashboard was accessed through a web browser using the server IP address.
+
+URL format:
+
+    https://SERVER_IP
+
+The administrator account generated during installation was used.
+
+Username:
+
+    admin
+
+## Result
+
+Authentication was completed successfully and access to the Wazuh Dashboard was confirmed.
+
+## Evidence
+
+Screenshot:
+
+phase4-08-wazuh-login.png
+
+---
+
+# Step 8 - Wazuh Service Validation
+
+## Description
+
+After accessing the Dashboard, the Wazuh services were verified to confirm that all components were running correctly.
+
+## Wazuh Manager
+
+Command:
+
+    sudo systemctl status wazuh-manager
+
+Expected result:
+
+    Active: active (running)
+
+Evidence:
+
+phase4-05-wazuh-manager-status.png
+
+---
+
+## Wazuh Indexer
+
+Command:
+
+    sudo systemctl status wazuh-indexer
+
+Expected result:
+
+    Active: active (running)
+
+Evidence:
+
+phase4-06-wazuh-indexer-status.png
+
+---
+
+## Wazuh Dashboard
+
+Command:
+
+    sudo systemctl status wazuh-dashboard
+
+Expected result:
+
+    Active: active (running)
+
+Evidence:
+
+phase4-07-wazuh-dashboard-status.png
+
+---
+
+# Step 9 - Dashboard Validation
+
+## Description
+
+The Wazuh Dashboard interface was validated after successful authentication.
+
+The validation confirmed:
+
+- Dashboard availability.
+- Wazuh Manager communication.
+- Wazuh Indexer availability.
+- Successful deployment of the SIEM/XDR environment.
+
+## Evidence
+
+Screenshot:
+
+phase4-09-wazuh-dashboard.png
 
 ---
 
 # Phase 4 Summary
 
-The Wazuh SIEM/XDR platform was successfully deployed on the Ubuntu Server environment.
+The Wazuh SIEM/XDR platform was successfully deployed and validated.
 
 Completed tasks:
 
-- Downloaded Wazuh installation assistant.
-- Validated the installation script.
-- Identified and resolved an AccessDenied download issue.
-- Installed Wazuh Indexer.
-- Installed Wazuh Manager.
-- Installed Wazuh Dashboard.
-- Verified successful deployment.
+- Downloaded and validated the Wazuh installation assistant.
+- Resolved a download issue.
+- Installed Wazuh Indexer, Wazuh Manager and Wazuh Dashboard.
+- Configured remote SSH administration.
+- Recovered generated administrator credentials.
+- Accessed the Wazuh Dashboard.
+- Verified Wazuh services.
 
-The server is now ready for the next phase: endpoint deployment and security monitoring.
+The environment is ready for endpoint deployment and security monitoring.
 
 ---
 
@@ -194,7 +315,7 @@ The server is now ready for the next phase: endpoint deployment and security mon
 
 The next phase will cover:
 
-- Connecting endpoints to Wazuh.
 - Deploying Wazuh agents.
+- Connecting endpoints to the Wazuh Manager.
 - Collecting security events.
-- Generating and analyzing alerts.
+- Generating and analyzing security alerts.

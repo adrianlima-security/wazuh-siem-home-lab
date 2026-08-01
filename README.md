@@ -36,11 +36,9 @@ This laboratory focuses on developing hands-on skills in:
 
 ## Project Structure
 
-```text
 documentation/
 screenshots/
 README.md
-```
 
 ---
 
@@ -49,7 +47,7 @@ README.md
 - ✅ Phase 1 - Environment Setup
 - ✅ Phase 2 - Ubuntu Server Installation
 - ✅ Phase 3 - Initial Server Configuration
-- ✅ Phase 4 - Wazuh Installation
+- ✅ Phase 4 - Wazuh SIEM/XDR Installation
 - ⏳ Phase 5 - Endpoint Deployment
 - ⏳ Phase 6 - Security Monitoring
 - ⏳ Phase 7 - Threat Detection
@@ -59,8 +57,8 @@ README.md
 
 ## Repository Structure
 
-```text
 Wazuh-SIEM-Home-Lab
+
 │
 ├── documentation
 │   ├── phase-1-environment-setup.md
@@ -72,27 +70,27 @@ Wazuh-SIEM-Home-Lab
 ├── screenshots
 │
 └── README.md
-```
 
 ---
 
 ## Current Status
 
-The virtual environment and initial server configuration have been successfully completed.
+The Wazuh SIEM/XDR environment has been successfully deployed.
 
 Completed:
 
 - VMware Workstation installation
 - Ubuntu Server installation
-- Initial server deployment
-- Network connectivity verification
-- System updates and package management
-- Hostname and network configuration validation
-- Time synchronization verification
-- SSH service configuration
+- Initial server configuration
+- Wazuh SIEM/XDR deployment
+- Wazuh Manager installation
+- Wazuh Indexer installation
+- Wazuh Dashboard deployment
+- SSH remote administration setup
+- Wazuh Dashboard access validation
 - GitHub documentation
 
-The next step is to deploy the Wazuh SIEM/XDR platform.
+The next step is to deploy Wazuh agents and begin endpoint monitoring and security event analysis.
 
 ---
 
