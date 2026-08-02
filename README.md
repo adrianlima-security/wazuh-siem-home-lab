@@ -1,290 +1,260 @@
 # Wazuh SIEM Home Lab
 
+![Platform](https://img.shields.io/badge/Platform-Wazuh-blue)
+![OS](https://img.shields.io/badge/OS-Ubuntu%2024.04%20%7C%20Windows%2011-green)
+![Status](https://img.shields.io/badge/Status-In%20Progress-orange)
+![License](https://img.shields.io/badge/Project-Home%20Lab-red)
+
+---
+
 ## Overview
 
-Cybersecurity home lab designed to deploy, configure, and analyze a Security Information and Event Management (SIEM) environment using Wazuh.
+This project documents the implementation of a Wazuh SIEM Home Lab designed to simulate a Security Operations Center (SOC) monitoring environment.
 
-The objective of this project is to gain practical experience in security monitoring, endpoint detection, log analysis, and SOC investigation workflows.
+The objective is to gain hands-on experience with SIEM deployment, endpoint monitoring, Windows Event Log collection, PowerShell monitoring, alert investigation, and SOC analyst workflows.
 
----
-
-# Project Objectives
-
-This laboratory was created to develop hands-on skills in:
-
-- SIEM deployment and configuration
-- Endpoint monitoring
-- Security event collection
-- Log analysis
-- Alert investigation
-- Windows security monitoring
-- SOC analyst workflows
+The laboratory reproduces a real-world defensive security environment where endpoint telemetry is collected, analyzed, and investigated through a centralized SIEM platform.
 
 ---
 
-# Technologies Used
+## Objectives
 
-## SIEM Platform
-
-- Wazuh SIEM
-
-## Operating Systems
-
-- Ubuntu Server
-- Windows 11 Endpoint
-
-## Security Concepts
-
-- Security Information and Event Management (SIEM)
-- Endpoint Detection and Monitoring
-- Windows Event Analysis
-- Authentication Monitoring
-- Security Alert Investigation
+- Deploy a functional Wazuh SIEM environment.
+- Configure endpoint monitoring.
+- Collect Windows security events.
+- Investigate authentication activity.
+- Monitor PowerShell execution.
+- Analyze security alerts.
+- Practice SOC investigation workflows.
+- Develop practical blue team skills.
 
 ---
 
-# Lab Architecture
-
-The environment consists of:
+## Lab Architecture
 
 ```text
-Windows 11 Endpoint
-        |
-        |
-     Wazuh Agent
-        |
-        |
- Ubuntu Server
-(Wazuh Manager + Dashboard)
+              Windows 11 Endpoint
+                     │
+                     │
+               Wazuh Agent
+                     │
+                     │
+               Wazuh Manager
+                     │
+                     │
+        Wazuh Indexer + Dashboard
+                     │
+                     │
+       Security Event Investigation
 ```
 
-The Windows endpoint sends security events to the Wazuh Manager, where logs are collected, analyzed, and investigated through the dashboard.
+---
+
+## Environment
+
+### SIEM Platform
+
+- Wazuh Manager
+- Wazuh Indexer
+- Wazuh Dashboard
+
+### Server
+
+- Ubuntu Server 24.04 LTS
+
+### Endpoint
+
+- Windows 11
+- Wazuh Agent
 
 ---
 
-# Repository Structure
+## Technologies Used
 
-```text
-Wazuh-SIEM-Home-Lab/
+### Security
 
+- Wazuh SIEM
+- Windows Event Logs
+- PowerShell Script Block Logging
+- Security Monitoring
+- Endpoint Detection & Response (EDR) Concepts
+
+### Infrastructure
+
+- Ubuntu Server
+- Windows 11 Virtual Machine
+- Git
+- GitHub
+
+---
+
+## Project Phases
+
+### Phase 1 – Environment Preparation
+
+- Server deployment
+- Initial configuration
+- Network validation
+
+### Phase 2 – Wazuh Deployment
+
+- Installed Wazuh Manager
+- Installed Wazuh Indexer
+- Installed Wazuh Dashboard
+
+### Phase 3 – Agent Deployment
+
+- Installed Wazuh Agent
+- Connected Windows endpoint
+- Validated communication
+
+### Phase 4 – Log Collection
+
+- Windows Event collection
+- Security log ingestion
+- Endpoint telemetry validation
+
+### Phase 5 – Security Monitoring
+
+- Alert analysis
+- Event filtering
+- Dashboard investigation
+
+### Phase 6 – Detection Validation
+
+- Authentication monitoring
+- Privileged account activity
+- Security event validation
+
+### Phase 7 – Windows Event Monitoring & PowerShell Detection
+
+Implemented:
+
+- Windows Security Event monitoring
+- Authentication event analysis
+- Privilege monitoring
+- Credential Manager visibility
+- PowerShell Script Block Logging
+- PowerShell command detection
+
+Detected Windows Events:
+
+- Event ID 4624 — Successful Logon
+- Event ID 4672 — Special Privileges Assigned
+- Event ID 5379 — Credential Manager Access
+- Event ID 4104 — PowerShell Script Block Logging
+
+---
+
+## Key Findings
+
+The SIEM successfully collected, processed, and displayed Windows endpoint telemetry.
+
+PowerShell Script Block Logging was enabled, allowing Wazuh to capture executed PowerShell commands, including:
+
+- `whoami`
+- `hostname`
+- `Get-Date`
+- `Get-WinEvent`
+
+Authentication events and privilege-related activity were successfully ingested into the SIEM, demonstrating end-to-end visibility from the Windows endpoint to the Wazuh Dashboard.
+
+---
+
+## Repository Structure
+
+```
+wazuh-siem-home-lab/
+│
 ├── documentation/
-│   ├── phase-1-environment-preparation.md
-│   ├── phase-2-wazuh-deployment.md
-│   ├── phase-3-endpoint-integration.md
-│   ├── phase-4-log-collection.md
-│   ├── phase-5-detection-analysis.md
-│   └── phase-6-security-monitoring.md
+│   └── phase-7-windows-event-monitoring.md
 │
 ├── screenshots/
-│   ├── phase1/
-│   ├── phase2/
-│   ├── phase3/
-│   ├── phase4/
-│   ├── phase5/
-│   └── phase6/
 │
 └── README.md
 ```
 
 ---
 
-# Project Phases
+## Documentation
 
-## Phase 1 - Environment Preparation
+Detailed documentation is available in the **documentation/** directory.
 
-Completed:
+Current documentation:
 
-- Lab environment setup
-- Virtual machine preparation
-- Initial configuration
-
-Documentation:
-
-[Phase 1 - Environment Preparation](documentation/phase-1-environment-preparation.md)
+- Phase 7 – Windows Event Monitoring and PowerShell Detection
 
 ---
 
-## Phase 2 - Wazuh Deployment
+## Screenshots
 
-Completed:
+Implementation evidence is stored in the **screenshots/** directory.
 
-- Wazuh installation
-- Manager deployment
-- Dashboard configuration
+Current screenshots include:
 
-Documentation:
-
-[Phase 2 - Wazuh Deployment](documentation/phase-2-wazuh-deployment.md)
-
----
-
-## Phase 3 - Endpoint Integration
-
-Completed:
-
-- Windows 11 endpoint preparation
-- Wazuh Agent installation
-- Agent registration
-- Endpoint communication validation
-
-Documentation:
-
-[Phase 3 - Endpoint Integration](documentation/phase-3-endpoint-integration.md)
+- Monitoring validation
+- Failed logon detection
+- Alert investigation
+- PowerShell Event ID 4104
+- Script Block Logging
+- Wazuh Dashboard investigation
 
 ---
 
-## Phase 4 - Log Collection Validation
+## Skills Demonstrated
 
-Completed:
+### SIEM Operations
 
-- Endpoint log verification
-- Event collection testing
-- Security data validation
-
-Documentation:
-
-[Phase 4 - Log Collection Validation](documentation/phase-4-log-collection.md)
-
----
-
-## Phase 5 - Detection and Analysis
-
-Completed:
-
-- Security event review
-- Detection validation
-- Initial investigation workflow
-
-Documentation:
-
-[Phase 5 - Detection and Analysis](documentation/phase-5-detection-analysis.md)
-
----
-
-## Phase 6 - Security Monitoring
-
-Completed:
-
-- Agent status verification
-- Windows security event monitoring
-- Controlled event generation
-- Authentication event detection
-- Basic alert investigation
-
-Key event analyzed:
-
-```text
-Event:
-Windows Logon Success
-
-Rule ID:
-60106
-
-Severity:
-Level 3 - Low
-
-Agent:
-lab-win11
-```
-
-Documentation:
-
-[Phase 6 - Security Monitoring](documentation/phase-6-security-monitoring.md)
-
----
-
-# Evidence
-
-Validation screenshots and evidence are stored in:
-
-[screenshots](screenshots/)
-
-Evidence includes:
-
-- Agent connection status
-- Security event collection
-- Generated authentication events
-- Alert investigation workflow
-
----
-
-# Skills Demonstrated
-
-Through this project, I practiced:
-
-## SIEM
-
-- Wazuh deployment
-- Dashboard monitoring
-- Security event analysis
-
-## Endpoint Security
-
-- Windows monitoring
-- Agent management
-- Authentication event investigation
-
-## SOC Operations
-
-- Alert triage
-- Event validation
-- Basic incident analysis
-- Security monitoring workflow
-
-## Cybersecurity Fundamentals
-
+- Wazuh administration
+- Event ingestion
 - Log analysis
-- Threat detection concepts
-- Security event investigation
-- Vulnerability assessment concepts
+- Alert investigation
+
+### Security Monitoring
+
+- Windows Event Log analysis
+- Authentication monitoring
+- Privilege monitoring
+- Endpoint visibility
+
+### Threat Detection
+
+- PowerShell activity analysis
+- Script Block Logging
+- Suspicious activity investigation
+- SOC investigation workflow
+
+### Cybersecurity Concepts
+
+- SIEM architecture
+- Endpoint monitoring
+- Detection engineering
+- Defensive security
+- Security Operations Center (SOC) workflows
 
 ---
 
-# Future Improvements
+## Future Improvements
 
-Planned improvements:
+Planned enhancements include:
 
-- Add vulnerability scanning integration
-- Create custom Wazuh detection rules
-- Simulate additional attack scenarios
-- Integrate threat intelligence sources
-- Expand incident response documentation
-- Develop custom detection engineering workflows
-
----
-
-# Project Status
-
-Current status:
-
-```text
-Completed:
-
-✓ Wazuh Deployment
-✓ Windows Endpoint Integration
-✓ Security Monitoring
-✓ Event Investigation
-
-Next:
-
-→ Advanced Detection Engineering
-→ Attack Simulation
-→ Incident Response Workflows
-→ Custom Detection Rules
-```
+- Linux endpoint monitoring
+- Sysmon integration
+- Custom Wazuh detection rules
+- Attack simulations (Atomic Red Team)
+- Threat Intelligence integration
+- Active Response automation
+- MITRE ATT&CK mapping
+- Sigma rule integration
 
 ---
 
-# Author
+## Conclusion
 
-Adrian Lima
+This project demonstrates the implementation of a functional Wazuh SIEM environment for security monitoring and event investigation.
 
-Junior Cybersecurity Analyst | SOC | SIEM | Threat Detection
+The laboratory provides practical experience in deploying a SIEM, monitoring Windows endpoints, collecting security telemetry, investigating alerts, and validating detection capabilities.
 
-Focused on:
+The project reflects practical SOC analyst activities, including event monitoring, PowerShell analysis, authentication investigation, and defensive security operations.
 
-- SOC Operations
-- SIEM Monitoring
-- Threat Detection
-- Security Monitoring
-- Vulnerability Assessment
+**This repository is actively being expanded with additional detection scenarios, attack simulations, and SOC use cases.**

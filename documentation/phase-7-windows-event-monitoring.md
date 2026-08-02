@@ -1,22 +1,37 @@
 # Phase 7 - Windows Event Monitoring and PowerShell Detection
 
-## Introduction
+## Table of Contents
 
-This document describes the implementation, validation, and analysis process performed during Phase 7 of the Wazuh SIEM Home Lab project.
+- Introduction
+- Lab Environment
+- Phase 7.1 - Monitoring Validation
+- Phase 7.2 - Windows Security Event Collection
+- Phase 7.3 - PowerShell Monitoring Configuration
+- Phase 7.4 - PowerShell Event Validation
+- Phase 7.5 - Wazuh PowerShell Detection
+- Security Analysis
+- Conclusion
+
+---
+
+# Introduction
+
+This document describes the implementation, validation, and analysis performed during Phase 7 of the Wazuh SIEM Home Lab project.
 
 The objective of this phase was to validate that the Wazuh SIEM environment was correctly collecting security telemetry from a Windows endpoint, analyze Windows authentication events, and implement PowerShell monitoring capabilities through Script Block Logging.
 
-This phase represents a realistic Security Operations Center (SOC) workflow, where endpoint activity is collected, centralized, analyzed, and investigated through a SIEM platform.
+This phase simulates a real-world Security Operations Center (SOC) workflow where endpoint activity is collected, centralized, analyzed, and investigated through a SIEM platform.
 
-The main objectives were:
+## Objectives
 
 - Validate communication between the Windows endpoint and Wazuh Manager.
 - Confirm successful ingestion of Windows Security Events.
 - Analyze authentication-related events.
 - Enable PowerShell Script Block Logging.
 - Detect and analyze PowerShell execution activity.
-- Validate visibility through Wazuh Dashboard.
+- Validate visibility through the Wazuh Dashboard.
 
+---
 
 # Lab Environment
 
@@ -35,81 +50,96 @@ Endpoint information:
 
 - Operating System: Windows 11
 - Hostname: lab-win11
-- Agent Type: Wazuh Agent
+- Agent: Wazuh Agent
 
-The monitored sources configured on the endpoint include:
+Configured log sources:
 
 - Windows Security Event Log
 - Microsoft-Windows-PowerShell/Operational Event Log
 
+---
 
 # Phase 7.1 - Monitoring Validation
 
 Before analyzing security events, the Wazuh Manager configuration and service status were validated.
 
-The configuration test was executed using:
+Configuration test:
+
+```bash
 /var/ossec/bin/wazuh-analysisd -t
+```
 
+The configuration completed successfully, confirming that no syntax errors were present.
 
-The command completed successfully, confirming that the Wazuh Manager configuration was valid.
+The Wazuh Manager service was restarted:
 
-The manager service was restarted:
+```bash
 systemctl restart wazuh-manager
+```
 
-After restarting the service, the archive log was monitored to verify that events were being received from the Windows endpoint.
+To verify event ingestion from the monitored endpoint, the archive log was monitored:
 
-Command used:
+```bash
 tail -f /var/ossec/logs/archives/archives.log
+```
 
+The logs confirmed successful communication across the monitoring pipeline.
 
-The logs confirmed successful communication between:
+```text
+Windows Endpoint
+      │
+      ▼
+ Wazuh Agent
+      │
+      ▼
+ Wazuh Manager
+```
 
-Windows Endpoint → Wazuh Agent → Wazuh Manager
-
-
-Evidence:
+### Evidence
 
 - phase7-01-monitoring-ready.png
 
+---
 
 # Phase 7.2 - Windows Security Event Collection
 
-After confirming communication, Windows security events were analyzed.
+After confirming communication, Windows Security Events were analyzed.
 
-The Windows endpoint successfully generated multiple security events that were collected by Wazuh.
+The Windows endpoint successfully generated multiple security events that were collected and processed by Wazuh.
 
-The main events analyzed were:
+The primary events analyzed during this phase were:
 
-- Event ID 4624 - Successful Logon
-- Event ID 4672 - Special Privileges Assigned to New Logon
-- Event ID 5379 - Credential Manager Access
+- **Event ID 4624 – Successful Logon**
+- **Event ID 4672 – Special Privileges Assigned to New Logon**
+- **Event ID 5379 – Credential Manager Access**
 
+## Event ID 4624 – Successful Logon
 
-## Event ID 4624 - Successful Logon
+Event ID 4624 is generated whenever an account successfully authenticates on a Windows system.
 
-Event ID 4624 is generated when an account successfully authenticates on the Windows system.
+Collected information included:
 
-The collected information included:
-
-- Account information
+- User account
 - Logon type
 - Authentication package
-- Process responsible for creating the session
+- Source process
+- Session details
 
 Example:
-Event ID: 4624
+
+```text
 Provider: Microsoft-Windows-Security-Auditing
+Event ID: 4624
 Severity: AUDIT_SUCCESS
+```
 
+Authentication events are one of the primary data sources used by SOC analysts to investigate user activity and detect suspicious login behavior.
 
-This event is important because authentication monitoring is one of the main detection sources in a SOC environment.
+## Event ID 4672 – Special Privileges Assigned
 
+Event ID 4672 identifies accounts receiving elevated privileges during authentication.
 
-## Event ID 4672 - Privileged Logon
-
-Event ID 4672 identifies accounts receiving special privileges during authentication.
-
-Detected privileges included:
+Observed privileges included:
 
 - SeDebugPrivilege
 - SeBackupPrivilege
@@ -117,208 +147,230 @@ Detected privileges included:
 - SeTakeOwnershipPrivilege
 - SeImpersonatePrivilege
 
+These privileges are significant because attackers frequently attempt to abuse privileged accounts after gaining initial access to a system.
 
-These privileges are relevant because attackers may attempt to abuse elevated permissions after gaining access to a system.
+Monitoring privileged logons helps identify potential privilege escalation and lateral movement activities.
 
+## Event ID 5379 – Credential Manager Access
 
-## Event ID 5379 - Credential Manager Access
-
-Event ID 5379 indicates that stored credentials from Windows Credential Manager were accessed.
-
-This type of event is relevant for detecting credential-related activity.
+Event ID 5379 indicates that Windows Credential Manager was accessed.
 
 Potential security implications include:
 
 - Credential theft attempts
-- Unauthorized access
+- Unauthorized credential access
 - Post-exploitation activity
 
+Monitoring credential-related events improves visibility into techniques commonly used after initial compromise.
 
-Evidence:
+### Evidence
 
 - phase7-02-failed-login-detection.png
 - phase7-03-alert-analysis.png
 
+---
 
 # Phase 7.3 - PowerShell Monitoring Configuration
 
 PowerShell monitoring was enabled to increase endpoint visibility.
 
-PowerShell is frequently used by attackers because it provides powerful scripting capabilities and can execute commands directly on Windows systems.
+PowerShell is frequently leveraged by attackers because it provides powerful administrative and scripting capabilities while being natively available on Windows systems.
 
-To improve detection capabilities, Script Block Logging was enabled.
+To improve detection capabilities, PowerShell Script Block Logging was enabled.
 
+Registry location:
 
-The registry location configured was:
+```powershell
 HKLM:\Software\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging
+```
 
+Registry key creation:
 
-The registry key was created using:
+```powershell
 New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging" -Force
+```
 
+Enable Script Block Logging:
 
-Script Block Logging was enabled:
-Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging"
+```powershell
+Set-ItemProperty `
+-Path "HKLM:\Software\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging" `
 -Name EnableScriptBlockLogging `
 -Value 1
+```
 
+Validation:
 
-The configuration was validated:
+```powershell
 Get-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging"
+```
 
+Result:
 
-Validation result:
+```text
 EnableScriptBlockLogging : 1
+```
 
+This configuration enables Windows to record executed PowerShell commands as Event ID 4104, significantly improving visibility during security investigations.
 
-This configuration allows Windows to generate detailed PowerShell execution logs.
-
+---
 
 # Phase 7.4 - PowerShell Event Validation
 
-After enabling Script Block Logging, PowerShell events were generated and validated.
+After enabling Script Block Logging, PowerShell activity was generated and validated.
 
-The following command was executed:
+Executed command:
+
+```powershell
 Get-WinEvent -LogName "Microsoft-Windows-PowerShell/Operational" -MaxEvents 20 | Select Id, TimeCreated, Message
+```
 
-The endpoint generated several PowerShell events:
+The endpoint generated several PowerShell Operational events, including:
 
-- Event ID 40961 - PowerShell Console Starting
-- Event ID 40962 - PowerShell Console Ready
-- Event ID 53504 - PowerShell IPC Thread
-- Event ID 4104 - Script Block Logging
+- **Event ID 40961 – PowerShell Console Starting**
+- **Event ID 40962 – PowerShell Console Ready**
+- **Event ID 53504 – IPC Thread Started**
+- **Event ID 4104 – Script Block Logging**
 
+## Event ID 4104 – PowerShell Script Block Logging
 
-The most relevant event was Event ID 4104.
+Event ID 4104 records the content of executed PowerShell commands.
 
+Examples captured during testing:
 
-# Event ID 4104 - PowerShell Script Block Logging
-
-Event ID 4104 records the content of PowerShell commands executed on the endpoint.
-
-Examples detected:
+```powershell
 whoami
-
 hostname
-
 Get-Date
-
 Get-WinEvent -LogName "Microsoft-Windows-PowerShell/Operational"
+```
 
-This information provides valuable visibility for detecting malicious PowerShell usage.
+PowerShell monitoring provides valuable visibility into attacker behavior.
 
-Common attacker activities involving PowerShell include:
+Common malicious use cases include:
 
 - System discovery
 - Credential access
 - Downloading payloads
-- Execution of malicious scripts
-- Persistence techniques
+- Malicious script execution
+- Persistence mechanisms
+- Living-off-the-Land (LotL) techniques
 
+Capturing Event ID 4104 enables analysts to reconstruct attacker activity by recording executed PowerShell commands.
 
-Evidence:
+### Evidence
 
 - phase7-04-powershell-event.png
-- phase7-04-powershell-scriptblock-4104.png
+- phase7-05-powershell-scriptblock-4104.png
 
+---
 
 # Phase 7.5 - Wazuh PowerShell Detection
 
-After enabling PowerShell logging, events were verified on the Wazuh Manager.
+After enabling PowerShell logging, event ingestion was validated on the Wazuh Manager.
 
-The following command was used:
+Command used:
+
+```bash
 grep -i "PowerShell" /var/ossec/logs/archives/archives.log
+```
 
-The output confirmed successful ingestion of PowerShell events from the Windows endpoint.
+The output confirmed successful ingestion of PowerShell events generated on the Windows endpoint.
 
-Detected information included:
+Collected information included:
 
-- PowerShell provider
+- Provider name
 - Event ID
-- ScriptBlock content
+- Script Block content
 - Timestamp
-- Endpoint hostname
+- Hostname
+- Executed commands
 
+Examples detected:
 
-Example:
-Creating Scriptblock text:
-
+```powershell
 whoami
-
 hostname
-
 Get-Date
+```
 
-The complete event flow was validated:
+The complete monitoring pipeline was successfully validated.
+
+```text
 Windows Endpoint
-|
-|
-Wazuh Agent
-|
-|
-Wazuh Manager
-|
-|
-Wazuh Dashboard
+      │
+      ▼
+ Wazuh Agent
+      │
+      ▼
+ Wazuh Manager
+      │
+      ▼
+ Wazuh Dashboard
+```
 
+### Evidence
 
-Evidence:
+- phase7-06-wazuh-dashboard-powershell-alert.png
 
-- phase7-05-wazuh-dashboard-powershell-alert.png
-
+---
 
 # Security Analysis
 
-During this phase, the Wazuh SIEM demonstrated the ability to collect and analyze endpoint telemetry.
-
-The implemented monitoring capabilities provide visibility into:
-
+During this phase, the Wazuh SIEM successfully collected, processed, and analyzed Windows endpoint telemetry.
 
 ## Authentication Monitoring
 
 Capabilities:
 
 - Successful logon detection
-- Privileged authentication detection
-- Credential access monitoring
-
+- Privileged authentication monitoring
+- Credential access visibility
 
 Security benefits:
 
-- Identification of suspicious authentication behavior
-- Investigation of account activity
-- Detection of potential privilege abuse
+- Detection of suspicious login activity
+- Investigation of user behavior
+- Identification of privileged account usage
+- Detection of potential privilege escalation
 
+From a SOC perspective, authentication events represent one of the primary sources used during incident investigations. Correlating authentication activity allows analysts to identify abnormal behavior, unauthorized access, and account compromise.
 
 ## PowerShell Monitoring
 
 Capabilities:
 
-- Command execution visibility
-- Script Block analysis
+- PowerShell command visibility
+- Script Block Logging
 - User activity tracking
-
+- Command execution history
 
 Security benefits:
 
 - Detection of suspicious scripts
 - Investigation of attacker behavior
-- Identification of living-off-the-land techniques
+- Identification of Living-off-the-Land techniques
+- Increased endpoint visibility
 
+PowerShell remains one of the most common tools abused by attackers due to its native availability and administrative capabilities. Capturing Event ID 4104 significantly improves detection by recording executed commands, allowing analysts to reconstruct attacker activity and identify potentially malicious scripts.
+
+---
 
 # Conclusion
 
-Phase 7 successfully validated Windows endpoint monitoring using Wazuh SIEM.
+Phase 7 successfully validated end-to-end Windows event monitoring using Wazuh SIEM.
 
-The environment demonstrated complete visibility from endpoint activity generation to centralized SIEM analysis.
+The environment demonstrated complete visibility from endpoint activity generation to centralized collection, processing, analysis, and investigation within the SIEM platform.
 
 The following objectives were achieved:
 
 - Windows endpoint successfully connected to Wazuh.
-- Security events were collected and analyzed.
+- Windows Security Events were collected and analyzed.
 - Authentication events were monitored.
 - PowerShell Script Block Logging was enabled.
-- PowerShell execution activity was detected.
-- Events were visualized and investigated through Wazuh Dashboard.
+- PowerShell execution activity was successfully detected.
+- Events were visualized and investigated through the Wazuh Dashboard.
 
-This phase demonstrates practical SOC analyst skills including SIEM monitoring, event investigation, endpoint detection, and security log analysis.
+This phase demonstrates practical SOC analyst skills including SIEM administration, event investigation, Windows log analysis, endpoint monitoring, PowerShell detection, and defensive security operations.
+
+The implementation also establishes a solid foundation for future phases involving detection engineering, custom Wazuh rules, threat hunting, attack simulations, and incident response workflows.
