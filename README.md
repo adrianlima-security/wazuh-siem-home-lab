@@ -47,7 +47,7 @@ This laboratory was created to develop hands-on skills in:
 
 The environment consists of:
 
-```
+```text
 Windows 11 Endpoint
         |
         |
@@ -59,6 +59,32 @@ Windows 11 Endpoint
 ```
 
 The Windows endpoint sends security events to the Wazuh Manager, where logs are collected, analyzed, and investigated through the dashboard.
+
+---
+
+# Repository Structure
+
+```text
+Wazuh-SIEM-Home-Lab/
+
+├── documentation/
+│   ├── phase-1-environment-preparation.md
+│   ├── phase-2-wazuh-deployment.md
+│   ├── phase-3-endpoint-integration.md
+│   ├── phase-4-log-collection.md
+│   ├── phase-5-detection-analysis.md
+│   └── phase-6-security-monitoring.md
+│
+├── screenshots/
+│   ├── phase1/
+│   ├── phase2/
+│   ├── phase3/
+│   ├── phase4/
+│   ├── phase5/
+│   └── phase6/
+│
+└── README.md
+```
 
 ---
 
@@ -74,9 +100,7 @@ Completed:
 
 Documentation:
 
-```
-documentation/phase-1-environment-preparation.md
-```
+[Phase 1 - Environment Preparation](documentation/phase-1-environment-preparation.md)
 
 ---
 
@@ -90,9 +114,7 @@ Completed:
 
 Documentation:
 
-```
-documentation/phase-2-wazuh-deployment.md
-```
+[Phase 2 - Wazuh Deployment](documentation/phase-2-wazuh-deployment.md)
 
 ---
 
@@ -107,9 +129,7 @@ Completed:
 
 Documentation:
 
-```
-documentation/phase-3-endpoint-integration.md
-```
+[Phase 3 - Endpoint Integration](documentation/phase-3-endpoint-integration.md)
 
 ---
 
@@ -123,9 +143,7 @@ Completed:
 
 Documentation:
 
-```
-documentation/phase-4-log-collection.md
-```
+[Phase 4 - Log Collection Validation](documentation/phase-4-log-collection.md)
 
 ---
 
@@ -139,9 +157,7 @@ Completed:
 
 Documentation:
 
-```
-documentation/phase-5-detection-analysis.md
-```
+[Phase 5 - Detection and Analysis](documentation/phase-5-detection-analysis.md)
 
 ---
 
@@ -157,7 +173,7 @@ Completed:
 
 Key event analyzed:
 
-```
+```text
 Event:
 Windows Logon Success
 
@@ -173,26 +189,22 @@ lab-win11
 
 Documentation:
 
-```
-documentation/phase-6-security-monitoring.md
-```
+[Phase 6 - Security Monitoring](documentation/phase-6-security-monitoring.md)
 
 ---
 
 # Evidence
 
-Screenshots and validation evidence are stored in:
+Validation screenshots and evidence are stored in:
 
-```
-screenshots/
-```
+[screenshots](screenshots/)
 
-Examples:
+Evidence includes:
 
 - Agent connection status
-- Security events
-- Generated activity
-- Alert investigation
+- Security event collection
+- Generated authentication events
+- Alert investigation workflow
 
 ---
 
@@ -200,29 +212,31 @@ Examples:
 
 Through this project, I practiced:
 
-### SIEM
+## SIEM
 
 - Wazuh deployment
 - Dashboard monitoring
 - Security event analysis
 
-### Endpoint Security
+## Endpoint Security
 
 - Windows monitoring
 - Agent management
 - Authentication event investigation
 
-### SOC Operations
+## SOC Operations
 
 - Alert triage
 - Event validation
 - Basic incident analysis
+- Security monitoring workflow
 
-### Cybersecurity Fundamentals
+## Cybersecurity Fundamentals
 
 - Log analysis
 - Threat detection concepts
-- Security monitoring workflows
+- Security event investigation
+- Vulnerability assessment concepts
 
 ---
 
@@ -235,6 +249,7 @@ Planned improvements:
 - Simulate additional attack scenarios
 - Integrate threat intelligence sources
 - Expand incident response documentation
+- Develop custom detection engineering workflows
 
 ---
 
@@ -242,17 +257,20 @@ Planned improvements:
 
 Current status:
 
-```
+```text
 Completed:
+
 ✓ Wazuh Deployment
 ✓ Windows Endpoint Integration
 ✓ Security Monitoring
 ✓ Event Investigation
 
 Next:
+
 → Advanced Detection Engineering
 → Attack Simulation
 → Incident Response Workflows
+→ Custom Detection Rules
 ```
 
 ---
@@ -261,12 +279,12 @@ Next:
 
 Adrian Lima
 
-Cybersecurity Student | Junior Cybersecurity Analyst
+Junior Cybersecurity Analyst | SOC | SIEM | Threat Detection
 
 Focused on:
 
 - SOC Operations
-- SIEM
+- SIEM Monitoring
 - Threat Detection
 - Security Monitoring
 - Vulnerability Assessment
