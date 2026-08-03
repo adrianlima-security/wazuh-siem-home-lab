@@ -11,9 +11,9 @@
 
 This project documents the implementation of a Wazuh SIEM Home Lab designed to simulate a Security Operations Center (SOC) monitoring and detection environment.
 
-The objective is to gain hands-on experience with SIEM deployment, endpoint monitoring, Windows Event Log collection, PowerShell monitoring, security alert investigation, attack simulation, MITRE ATT&CK mapping, and SOC analyst workflows.
+The objective is to gain hands-on experience with SIEM deployment, endpoint monitoring, Windows Event Log collection, PowerShell monitoring, security alert investigation, attack simulation, MITRE ATT&CK mapping, and detection engineering workflows.
 
-The laboratory reproduces a defensive security environment where endpoint telemetry is collected, analyzed, and investigated through a centralized SIEM platform.
+The laboratory reproduces a defensive security environment where endpoint telemetry is collected, analyzed, investigated, and transformed into actionable security intelligence through a centralized SIEM platform.
 
 ---
 
@@ -27,7 +27,8 @@ The laboratory reproduces a defensive security environment where endpoint teleme
 * Investigate security alerts.
 * Simulate attacker techniques.
 * Map detected activity to MITRE ATT&CK.
-* Practice SOC investigation workflows.
+* Develop custom detection logic.
+* Practice SOC analyst workflows.
 * Develop practical blue team and detection engineering skills.
 
 ---
@@ -51,6 +52,9 @@ The laboratory reproduces a defensive security environment where endpoint teleme
                      │
                      │
         MITRE ATT&CK Technique Mapping
+                     │
+                     │
+          Detection Engineering
 ```
 
 ---
@@ -84,6 +88,7 @@ The laboratory reproduces a defensive security environment where endpoint teleme
 * Security Monitoring
 * Endpoint Detection and Response (EDR) Concepts
 * MITRE ATT&CK Framework
+* Detection Engineering
 
 ## Infrastructure
 
@@ -101,10 +106,10 @@ The laboratory reproduces a defensive security environment where endpoint teleme
 
 Implemented:
 
-* Laboratory planning
-* Virtual machine preparation
-* Network configuration
-* Initial environment validation
+* Laboratory environment planning.
+* Virtual machine preparation.
+* Network configuration.
+* Initial environment validation.
 
 ---
 
@@ -112,10 +117,10 @@ Implemented:
 
 Implemented:
 
-* Wazuh Manager installation
-* Wazuh Indexer installation
-* Wazuh Dashboard deployment
-* SIEM platform validation
+* Wazuh Manager installation.
+* Wazuh Indexer installation.
+* Wazuh Dashboard deployment.
+* SIEM platform validation.
 
 ---
 
@@ -123,10 +128,10 @@ Implemented:
 
 Implemented:
 
-* Windows 11 endpoint deployment
-* Wazuh Agent installation
-* Agent registration
-* Communication validation
+* Windows 11 endpoint deployment.
+* Wazuh Agent installation.
+* Agent registration.
+* Communication validation.
 
 ---
 
@@ -134,9 +139,9 @@ Implemented:
 
 Implemented:
 
-* Windows Event collection
-* Security log ingestion
-* Endpoint telemetry validation
+* Windows Event collection.
+* Security log ingestion.
+* Endpoint telemetry validation.
 
 ---
 
@@ -144,10 +149,10 @@ Implemented:
 
 Implemented:
 
-* Dashboard investigation
-* Event filtering
-* Security event analysis
-* Endpoint activity monitoring
+* Dashboard investigation.
+* Event filtering.
+* Security event analysis.
+* Endpoint activity monitoring.
 
 ---
 
@@ -155,14 +160,14 @@ Implemented:
 
 Implemented:
 
-* Authentication monitoring
-* Privileged account activity analysis
-* Security event validation
+* Authentication monitoring.
+* Privileged account activity analysis.
+* Security event validation.
 
 Analyzed events:
 
-* Event ID 4624 — Successful Logon
-* Event ID 4672 — Special Privileges Assigned
+* Event ID 4624 — Successful Logon.
+* Event ID 4672 — Special Privileges Assigned.
 
 ---
 
@@ -170,37 +175,41 @@ Analyzed events:
 
 Implemented:
 
-* Windows Security Event monitoring
-* Authentication event analysis
-* Privilege monitoring
-* Credential Manager visibility
-* PowerShell Script Block Logging
-* PowerShell command detection
+* Windows Security Event monitoring.
+* Authentication event analysis.
+* Privilege monitoring.
+* Credential Manager visibility.
+* PowerShell Script Block Logging.
+* PowerShell command detection.
 
 Detected Windows Events:
 
-* Event ID 4624 — Successful Logon
-* Event ID 4672 — Special Privileges Assigned
-* Event ID 5379 — Credential Manager Access
-* Event ID 4104 — PowerShell Script Block Logging
+* Event ID 4624 — Successful Logon.
+* Event ID 4672 — Special Privileges Assigned.
+* Event ID 5379 — Credential Manager Access.
+* Event ID 4104 — PowerShell Script Block Logging.
 
 PowerShell activity successfully captured:
 
-* `whoami`
-* `hostname`
-* `Get-Date`
-* `Get-WinEvent`
+```powershell
+whoami
+hostname
+Get-Date
+Get-WinEvent
+```
 
 ---
 
-## Phase 8 – MITRE ATT&CK Simulation & Detection Validation
+## Phase 8 – MITRE ATT&CK Simulation & Detection Engineering
 
 Implemented:
 
-* Controlled attack simulation
-* PowerShell-based reconnaissance activity
-* Security alert investigation
-* MITRE ATT&CK technique mapping
+* Controlled attack simulation.
+* PowerShell-based reconnaissance activity.
+* Security alert investigation.
+* MITRE ATT&CK technique mapping.
+* Custom Wazuh rule testing.
+* Detection engineering troubleshooting.
 
 Attack simulation:
 
@@ -208,13 +217,7 @@ Attack simulation:
 Get-Process
 ```
 
-The activity simulated attacker behavior attempting to enumerate running processes on a Windows endpoint.
-
-Detection:
-
-* PowerShell Script Block Logging
-* Windows Event ID 4104
-* Wazuh alert generation
+The activity simulated attacker behavior by enumerating running processes on the Windows endpoint.
 
 MITRE ATT&CK Mapping:
 
@@ -222,7 +225,7 @@ MITRE ATT&CK Mapping:
 T1057 - Process Discovery
 ```
 
-The exercise validated the complete detection workflow:
+Detection workflow validated:
 
 ```
 Attack Simulation
@@ -236,7 +239,18 @@ SIEM Detection
 Alert Investigation
         ↓
 MITRE ATT&CK Classification
+        ↓
+Custom Detection Development
+        ↓
+Rule Validation
 ```
+
+Additional detection engineering activities included:
+
+* Creation of a custom Wazuh rule.
+* Testing detection logic through `local_rules.xml`.
+* Troubleshooting Rule ID duplication issues.
+* Validating Wazuh rule processing.
 
 ---
 
@@ -244,16 +258,18 @@ MITRE ATT&CK Classification
 
 The SIEM successfully collected, processed, and displayed Windows endpoint telemetry.
 
-PowerShell Script Block Logging provided visibility into executed PowerShell commands, allowing Wazuh to analyze endpoint activity and generate security alerts.
+PowerShell Script Block Logging provided visibility into executed commands, allowing Wazuh to analyze endpoint activity and generate security alerts.
 
 The laboratory successfully demonstrated:
 
 * Endpoint telemetry collection.
-* Windows event analysis.
+* Windows Event Log analysis.
 * PowerShell monitoring.
 * Security alert investigation.
-* Attack simulation and detection validation.
-* MITRE ATT&CK classification.
+* MITRE ATT&CK technique mapping.
+* Attack simulation.
+* Detection engineering.
+* Custom rule troubleshooting.
 
 ---
 
@@ -271,7 +287,7 @@ wazuh-siem-home-lab/
 │   ├── phase-5-security-monitoring.md
 │   ├── phase-6-detection-validation.md
 │   ├── phase-7-windows-event-monitoring.md
-│   └── phase-8-mitre-attack-detection.md
+│   └── phase-8-mitre-attack-detection-engineering.md
 │
 ├── screenshots/
 │
@@ -286,8 +302,8 @@ Detailed documentation is available in the **documentation/** directory.
 
 Current documentation:
 
-* Phase 7 – Windows Event Monitoring and PowerShell Detection
-* Phase 8 – MITRE ATT&CK Simulation and Detection Validation
+* Phase 7 – Windows Event Monitoring and PowerShell Detection.
+* Phase 8 – MITRE ATT&CK Simulation and Detection Engineering.
 
 ---
 
@@ -297,14 +313,14 @@ Implementation evidence is stored in the **screenshots/** directory.
 
 Current screenshots include:
 
-* Wazuh Dashboard monitoring
-* Windows authentication events
-* Failed logon detection
-* Privilege escalation related events
-* PowerShell Event ID 4104
-* Script Block Logging
-* MITRE ATT&CK detection alert
-* Security alert investigation
+* Wazuh Dashboard monitoring.
+* Windows authentication events.
+* Failed logon detection.
+* Privilege-related events.
+* PowerShell Event ID 4104.
+* Script Block Logging.
+* MITRE ATT&CK detection alert.
+* Security alert investigation.
 
 ---
 
@@ -312,34 +328,35 @@ Current screenshots include:
 
 ## SIEM Operations
 
-* Wazuh administration
-* Event ingestion
-* Log analysis
-* Alert investigation
+* Wazuh administration.
+* Event ingestion.
+* Log analysis.
+* Alert investigation.
 
 ## Security Monitoring
 
-* Windows Event Log analysis
-* Authentication monitoring
-* Privilege monitoring
-* Endpoint visibility
+* Windows Event Log analysis.
+* Authentication monitoring.
+* Privilege monitoring.
+* Endpoint visibility.
 
 ## Threat Detection
 
-* PowerShell activity analysis
-* Script Block Logging
-* Attack simulation
-* MITRE ATT&CK mapping
-* Detection validation
+* PowerShell activity analysis.
+* Script Block Logging.
+* Attack simulation.
+* MITRE ATT&CK mapping.
+* Detection validation.
+* Custom rule development.
 
 ## Cybersecurity Concepts
 
-* SIEM architecture
-* Endpoint monitoring
-* Detection engineering
-* Defensive security
-* SOC analyst workflows
-* Blue team operations
+* SIEM architecture.
+* Endpoint monitoring.
+* Detection engineering.
+* Defensive security.
+* Blue team operations.
+* SOC analyst workflows.
 
 ---
 
@@ -347,14 +364,14 @@ Current screenshots include:
 
 Planned enhancements include:
 
-* Linux endpoint monitoring
-* Sysmon integration
-* Custom Wazuh detection rules
-* Atomic Red Team simulations
-* Threat Intelligence integration
-* Active Response automation
-* Sigma rule integration
-* Additional MITRE ATT&CK scenarios
+* Linux endpoint monitoring.
+* Sysmon integration.
+* Additional custom Wazuh detection rules.
+* Atomic Red Team simulations.
+* Threat Intelligence integration.
+* Active Response automation.
+* Sigma rule integration.
+* Additional MITRE ATT&CK scenarios.
 
 ---
 
@@ -362,8 +379,8 @@ Planned enhancements include:
 
 This project demonstrates the implementation of a functional Wazuh SIEM environment focused on security monitoring, detection validation, and SOC investigation workflows.
 
-The laboratory provides practical experience in deploying a SIEM, monitoring Windows endpoints, collecting security telemetry, investigating alerts, simulating attacker behavior, and mapping detected activity to the MITRE ATT&CK framework.
+The laboratory provides practical experience in deploying a SIEM, monitoring Windows endpoints, collecting security telemetry, investigating alerts, simulating attacker behavior, and developing detection logic.
 
-The project reflects practical SOC analyst activities, including event monitoring, PowerShell analysis, authentication investigation, threat detection, and defensive security operations.
+The project reflects practical SOC analyst activities, including event monitoring, PowerShell analysis, authentication investigation, MITRE ATT&CK mapping, and defensive security operations.
 
 **This repository is actively being expanded with additional detection scenarios, attack simulations, and SOC use cases.**
